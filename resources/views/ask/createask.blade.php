@@ -4,6 +4,10 @@
 @section('content')
 <h1>Put on Your Question</h1>
 
+<form action="/pertanyaan">
+    <button type="submit">Back to Question List</button>
+</form>
+
 <form action='/pertanyaan' method="post">
     @csrf
 
