@@ -30,8 +30,18 @@
             <td>{{$tny->created_at}}</td>
             <td>{{$tny->updated_at}}</td>
             <td>
-                <a href="/jawaban/{{$a=$tny->id}}">View</a>
+                <button type="submit" class="btn btn-sm btn-default">
+                    <a href="/pertanyaan/{{$a=$tny->id}}">View</a>
+                </button>
 
+                <form action="/pertanyaan/{{$tny->id}}" method="post" style="display: inline;">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-sm btn-danger">
+                        <i class="fas fa-trash"></i>
+                    </button>
+
+                </form>
 
             </td>
         </tr>

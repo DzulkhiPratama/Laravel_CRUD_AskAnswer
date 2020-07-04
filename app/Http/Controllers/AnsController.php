@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use App\Models\AnsModels;
 
 class AnsController extends Controller
 {
@@ -14,14 +14,10 @@ class AnsController extends Controller
      */
     public function index($a)
     {
-        //$tny = DB::table('ask')->where('id', $a)->first();
-        $tny = DB::table('ask')->find($a);
-        $ans = DB::table('answer')->where('ask_id', $a)->get();
-        $idtny = $a;
 
+        $ans = AnsModels::index($a);
 
-
-        return view('ans.index', ['tny' => $tny, 'ans' => $ans]);
+        return view('ans.index', ['tny' => $ans[0], 'ans' => $ans[1]]);
     }
 
     /**
@@ -42,21 +38,12 @@ class AnsController extends Controller
      */
     public function store(Request $request)
     {
-        $contentans = $request->contentans;
-        $b = $request->question_id;
 
+        $new_ans = AnsModels::store($request->all());
 
-        DB::table('answer')->insert(
-            ['Content' => $contentans, 'ask_id' => $b]
-        );
-
-
-
-        // $ask = DB::table('ask')->get();
-        //redirect()->route('jawaban.index', $request->question_id);
-
-        return redirect()->route('jawaban.index', $request->get('question_id'));
-        //return redirect('/jawaban/{$b}');
+        return redirect()->route('tanya_at.index', $request->get('ask_id'));
+        //return redirect('/jawaban/{b}');
+        //return redirect('/pertanyaan');
     }
 
     /**

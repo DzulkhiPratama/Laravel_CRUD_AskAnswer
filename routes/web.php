@@ -13,26 +13,22 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('adminlte.table');
-});
 
-Route::get('/master', function () {
-    return view('adminlte.master');
-});
+Route::get('/', 'AskController@index');
 
-Route::get('/items', function () {
-    return view('items.index');
-});
+Route::get('/pertanyaan', 'AskController@index'); //menampilkan list pertanyaan
+Route::get('/pertanyaan/create', 'AskController@create'); //form membuat tanya
+Route::post('/pertanyaan', 'AskController@store'); //menyimpan tanya
 
-Route::get('/data-tables', function () {
-    return view('adminlte.table1');
-});
+//Route::get('/pertanyaan/{a}', 'AnsController@index')->name('jawaban.index'); //menampilkan info tanya, dan jawaban2 dari tanya
 
-Route::get('/pertanyaan', 'AskController@index');
-Route::get('/pertanyaan/create', 'AskController@create');
-Route::post('/pertanyaan', 'AskController@store');
+Route::post('/jawaban/{a}', 'AnsController@store'); //menuliskan jawaban dari tanya
+
+Route::get('/pertanyaan/{a}/edit', 'AskController@edit'); //masuk ke form update tanya
+Route::put('/pertanyaan/{a}', 'AskController@update'); //route menangkap array update tanya, kembali ke pertanyaan dgn id
 
 
-Route::get('/jawaban/{a}', 'AnsController@index')->name('jawaban.index');
-Route::post('/jawaban/{a}', 'AnsController@store');
+Route::get('/pertanyaan/{a}', 'AnsController@index')->name('tanya_at.index'); //dipake untuk masuk keketerngan tanya,
+//ingin kembali lagi ke info pertanyaan, setelah update tanya di proses
+
+Route::delete('/pertanyaan/{a}', 'AskController@destroy');//menghapus pertanyaan

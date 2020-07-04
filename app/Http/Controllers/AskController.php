@@ -3,8 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-
+use App\Models\AskModels;
 
 
 class AskController extends Controller
@@ -16,7 +15,7 @@ class AskController extends Controller
      */
     public function index()
     {
-        $ask = DB::table('ask')->get();
+        $ask = AskModels::get_all();
 
         return view('ask.index', ['ask' => $ask]);
     }
@@ -39,14 +38,9 @@ class AskController extends Controller
      */
     public function store(Request $request)
     {
-        $tittle = $request->about;
-        $content = $request->contentask;
 
-        DB::table('ask')->insert(
-            ['Tittle' => $tittle, 'Content' => $content]
-        );
+        $new_ask = AskModels::save($request->all());
 
-        // $ask = DB::table('ask')->get();
         return redirect('/pertanyaan');
     }
 
@@ -67,9 +61,11 @@ class AskController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($a)
     {
-        //
+        $ask = AskModels::find_by_id($a);
+
+        return view('ask.askedit', compact('ask'));
     }
 
     /**
@@ -79,9 +75,11 @@ class AskController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $a)
     {
-        //
+        $askit = AskModels::update($a, $request->all());
+        //return redirect('/pertanyaan');
+        return redirect()->route('tanya_at.index', $request->get('ask_id'));
     }
 
     /**
@@ -90,8 +88,9 @@ class AskController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($a)
     {
-        //
+        $deleteat = AskModels::deleteat($a);
+        return redirect('/pertanyaan');
     }
 }
